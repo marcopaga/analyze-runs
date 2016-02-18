@@ -37,11 +37,11 @@
   (let [t   (find-tag (:content p) :time)
         ts  (tf/parse (first (:content t)))
         e   (find-tag (:content p) :ele)
-        es  (first (:content e))
+        ele  (read-string (first (:content e)))
         lat (read-string (get-in p [:attrs :lat]))
         lon (read-string (get-in p [:attrs :lon]))]
     {:time ts
-     :elevation es
+     :elevation ele
      :lat lat
      :lon lon}))
 

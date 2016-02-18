@@ -15,7 +15,7 @@
 
 (deftest assert-elevation-first-point
   (let [first-point (first points-from-sample-file)]
-    (is (= (:elevation first-point) "37.083679"))))
+    (is (= (:elevation first-point) 37.083679))))
 
 (deftest assert-lat-first-point
   (let [first-point (first points-from-sample-file)]
