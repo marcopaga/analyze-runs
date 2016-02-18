@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<gpx version="1.1" creator="iSmoothRun - http://www.ismoothrun.com"
+	xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" 
+	xmlns="http://www.topografix.com/GPX/1/1"
+	xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1"
+	xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<trk>
+		<name>Freies Training</name>
+		<desc></desc>
+		<trkseg>
+			<trkpt lat="50.671865" lon="7.187874">
+				<ele>37.083679</ele>
+				<time>2016-02-17T17:35:18Z</time>
+				<extensions>
+					<gpxtpx:TrackPointExtension>
+						<gpxtpx:hr>114</gpxtpx:hr>
+					</gpxtpx:TrackPointExtension>
+				</extensions>
+			</trkpt>
+			<trkpt lat="50.671815" lon="7.187876">
+				<ele>37.083679</ele>
+				<time>2016-02-17T17:35:19Z</time>
+				<extensions>
+					<gpxtpx:TrackPointExtension>
+						<gpxtpx:hr>116</gpxtpx:hr>
+					</gpxtpx:TrackPointExtension>
+				</extensions>
+			</trkpt>
+			<trkpt lat="50.671792" lon="7.187888">
+				<ele>37.070572</ele>
+				<time>2016-02-17T17:35:20Z</time>
+				<extensions>
+					<gpxtpx:TrackPointExtension>
+						<gpxtpx:hr>118</gpxtpx:hr>
+					</gpxtpx:TrackPointExtension>
+				</extensions>
+			</trkpt>
+		</trkseg>
+	</trk></gpx>
