@@ -31,3 +31,6 @@
 
 (deftest assert-elapsed-time
   (is (= 3 (calculate-time points-from-sample-file))))
+
+(deftest assert-distance
+  (is (= 0.008250017987846405 (calculate-distance points-from-sample-file))))
