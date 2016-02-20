@@ -24,3 +24,10 @@
 (deftest assert-lon-first-point
   (let [first-point (first points-from-sample-file)]
     (is (= (:lon first-point) 7.187874))))
+
+(deftest assert-heart-rate-first-point
+  (let [first-point (first points-from-sample-file)]
+    (is (= (:heart-rate first-point) 114))))
+
+(deftest assert-elapsed-time
+  (is (= 3 (calculate-time points-from-sample-file))))
