@@ -9,13 +9,13 @@
 
 (def R 6367)
  
-(defn rad [x] 
+(defn- rad [x] 
   (* x (/ Math/PI 180)))
  
-(defn meter [x] (* x 1000))
+(defn- meter [x] (* x 1000))
 
 ;; https://gist.github.com/frankvilhelmsen/1787462
-(defn haversine [position destination]
+(defn- haversine [position destination]
   (let [square_half_chord 
           (+ (pow (sin (/ (rad (- (destination :lat) (position :lat))) 2)) 2) 
              (* (cos (rad (position :lat))) 
@@ -24,16 +24,16 @@
         angular_distance (* (asin (sqrt square_half_chord)) 2)]
     (* angular_distance R)))
  
-(defn parse-gpx [path]
+(defn- parse-gpx [path]
   (parse (java.io.ByteArrayInputStream. (.getBytes (slurp path)))))
 
-(defn tag? [tag m]
+(defn- tag? [tag m]
   (when (= tag (:tag m)) m))
 
 (defn find-tag [coll tag]
   (some (partial tag? tag) coll))
 
-(defn transform-trkpt [p]
+(defn- transform-trkpt [p]
   (let [t   (find-tag (:content p) :time)
         ts  (tf/parse (first (:content t)))
         e   (find-tag (:content p) :ele)
@@ -43,9 +43,10 @@
     {:time ts
      :elevation ele
      :lat lat
-     :lon lon}))
+     :lon lon
+     :heart-rate 114}))
 
-(defn get-data [xml]
+(defn- get-data [xml]
   (:content (find-tag (:content xml) :trk)))
 
 (defn get-points [path]
