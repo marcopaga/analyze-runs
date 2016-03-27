@@ -61,7 +61,7 @@
                  (:time (last coll)))))
 
 (defn calculate-distance [coll]
-  (reduce + (map #(haversine (first %) (second %)) (partition 2 1 coll))))
+  (transduce (map #(haversine (first %) (second %))) + (partition 2 1 coll)))
 
 (defn rround [n]
   (/ (round (* n 100)) 100.0))
