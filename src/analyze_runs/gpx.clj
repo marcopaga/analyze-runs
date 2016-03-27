@@ -61,11 +61,7 @@
                  (:time (last coll)))))
 
 (defn calculate-distance [coll]
-  (if (< (count coll) 2)
-    0
-    (+ (haversine (first coll)
-                  (second coll))
-       (calculate-distance (rest coll)))))
+  (reduce + (map #(haversine (first %) (second %)) (partition 2 1 coll))))
 
 (defn rround [n]
   (/ (round (* n 100)) 100.0))
