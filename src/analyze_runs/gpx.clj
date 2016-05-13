@@ -1,11 +1,10 @@
 (ns analyze-runs.gpx
+  "This code is from: https://github.com/honza/clj-gpx and was distributed under the BSD License"
   (:require [clojure.xml :refer :all]
             [clojure.algo.generic.math-functions :refer :all]
             [clj-time.format :as tf]
             [clj-time.core :as tc]
             [clojure.pprint :refer [pprint]]))
-
-(comment "This code is from: https://github.com/honza/clj-gpx and was distributed under the BSD License")
 
 (def R 6367)
  
@@ -24,8 +23,11 @@
         angular_distance (* (asin (sqrt square_half_chord)) 2)]
     (* angular_distance R)))
  
-(defn- parse-gpx [path]
+(defn- parse-gpx-file [path]
   (parse (java.io.ByteArrayInputStream. (.getBytes (slurp path)))))
+
+(defn- parse-gpx-string [string]
+  (parse (java.io.ByteArrayInputStream. (.getBytes string))))
 
 (defn- tag? [tag m]
   (when (= tag (:tag m)) m))
@@ -44,13 +46,21 @@
      :elevation ele
      :lat lat
      :lon lon
-     :heart-rate 114}))
+     }))
 
 (defn- get-data [xml]
   (:content (find-tag (:content xml) :trk)))
 
-(defn get-points [path]
-  (let [raw (get-data (parse-gpx path))
+(defn- get-points[source parser-fn]
+  (let [raw (get-data (parser-fn source))
+        trks (:content (find-tag raw :trkseg))]
+    (sort-by :time (map transform-trkpt trks))))
+
+(defn get-points-from-string [string]
+  (get-points string parse-gpx-string))
+
+(defn get-points-from-file [path]
+  (let [raw (get-data (parse-gpx-file path))
         trks (:content (find-tag raw :trkseg))]
     (sort-by :time (map transform-trkpt trks))))
 

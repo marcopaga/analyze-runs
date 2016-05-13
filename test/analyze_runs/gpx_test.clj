@@ -4,7 +4,10 @@
             [clj-time.format :as tf]
             [analyze-runs.gpx :refer :all]))
 
-(def points-from-sample-file (get-points "test/sample.gpx"))
+(def points-string "<gpx><trk><name>Test</name><trkseg><trkpt lat='1' lon='2'><ele>4</ele><time>2016-05-13T11:11:11Z</time></trkpt><trkpt lat='2' lon='3'><ele>4</ele><time>2016-05-13T11:15:11Z</time></trkpt></trkseg></trk></gpx>")
+
+(def points-from-sample-file (get-points-from-file "test/sample.gpx"))
+
 (def first-point (first points-from-sample-file))
 
 (deftest should-read-3-records-from-sample-file
@@ -22,12 +25,11 @@
 (deftest assert-lon-first-point
   (is (= (:lon first-point) 7.187874)))
 
-(deftest assert-heart-rate-first-point
-  (is (= (:heart-rate first-point) 114)))
-
 (deftest assert-elapsed-time
   (is (= 3 (calculate-time points-from-sample-file))))
 
 (deftest assert-distance
   (is (= 0.008250017987846405 (calculate-distance points-from-sample-file))))
 
+(deftest assert-points-from-string
+  (is (= 2 (count (get-points-from-string points-string) ))))
