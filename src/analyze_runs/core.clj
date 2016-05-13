@@ -1,7 +1,9 @@
 (ns analyze-runs.core
   (:require [analyze-runs.gpx :refer :all]
             [clojure.java.io :as io]
-            [clojure.string :as s])
+            [clojure.string :as s]
+            [compojure.core :refer :all]
+            [compojure.route :as route])
   (:gen-class))
 
 (defn find-files []
@@ -11,9 +13,12 @@
     all-gpx-files))
 
 (defn distance [file]
-  (-> file .getAbsolutePath get-points calculate-distance))
+  (-> file .getAbsolutePath get-points-from-file calculate-distance))
+
+(defroutes app
+  (GET "/" [] "Hello from compojure!")
+  (POST "/" {body :body} (get-points-from-string (slurp body))))
 
 (defn -main
-  "I don't do a whole lot ... yet."
   [& args]
   (println (map distance (find-files))))

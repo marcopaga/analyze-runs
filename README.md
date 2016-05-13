@@ -7,6 +7,7 @@ Analyze my runs that are exported as gpx files in my Dropbox Folder
 ## Usage
 
     $ lein run
+    $ lein ring server
 
 ## Thank you
 
