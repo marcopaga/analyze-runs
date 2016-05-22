@@ -17,8 +17,8 @@
 
 (defroutes app
   (GET "/" [] "Hello from compojure!")
-  (POST "/" {body :body} (get-points-from-string (slurp body))))
+  (POST "/" {body :body} (-> (slurp body) get-points-from-string calculate-distance str)))
 
 (defn -main
   [& args]
-  (println (map distance (find-files))))
+  (println "HTTP Server started"))
