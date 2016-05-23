@@ -8,7 +8,7 @@
                  [org.clojure/algo.generic "0.1.2"]
                  [compojure "1.5.0"]]
   :plugins [[lein-ring "0.9.7"]]
-  :ring {:handler analyze-runs.core/app}
+  :ring {:handler analyze-runs.web/app}
   :main ^:skip-aot analyze-runs.core
   :target-path "target/%s"
   :profiles {

@@ -3,7 +3,8 @@
             [clojure.java.io :as io]
             [clojure.string :as s]
             [compojure.core :refer :all]
-            [compojure.route :as route])
+            [compojure.route :as route]
+            [clojure.core.async :as async :refer :all])
   (:gen-class))
 
 (defn find-files []
@@ -15,10 +16,6 @@
 (defn distance [file]
   (-> file .getAbsolutePath get-points-from-file calculate-distance))
 
-(defroutes app
-  (GET "/" [] "Hello from compojure!")
-  (POST "/" {body :body} (-> (slurp body) get-points-from-string calculate-distance str)))
-
 (defn -main
   [& args]
-  (println "HTTP Server started"))
+  (str (find-files)))
