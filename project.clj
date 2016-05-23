@@ -6,7 +6,8 @@
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [clj-time "0.8.0"]
                  [org.clojure/algo.generic "0.1.2"]
-                 [compojure "1.5.0"]]
+                 [compojure "1.5.0"]
+                 [org.clojure/core.async "0.2.374"]]
   :plugins [[lein-ring "0.9.7"]]
   :ring {:handler analyze-runs.web/app}
   :main ^:skip-aot analyze-runs.core

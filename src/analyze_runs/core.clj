@@ -4,11 +4,20 @@
             [clojure.string :as s]
             [compojure.core :refer :all]
             [compojure.route :as route]
-            [clojure.core.async :as async :refer :all])
+            [clojure.core.async :as async :refer [>! <! >!! <!! go chan buffer close! thread
+                                                  alts! alts!! timeout]])
   (:gen-class))
 
+(def gpx-files-channel (chan))
+
 (defn find-files []
-  (let [all-direntries (file-seq (io/file "/Users/marco/Dropbox/Apps/iSmoothRun/Export"))
+  (find-files "/Users/marco/Dropbox/Apps/iSmoothRun/Export"))
+
+(defn find-files-annex []
+  (find-files "/Users/marco/annex/archive/Laeufe"))
+
+(defn find-files [path]
+  (let [all-direntries (file-seq (io/file path))
         all-files (filter #(.isFile %) all-direntries)
         all-gpx-files (filter #(s/includes? % ".gpx") all-files)]
     all-gpx-files))
