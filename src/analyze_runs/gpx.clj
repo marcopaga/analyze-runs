@@ -64,7 +64,7 @@
 
 (defn calculate-time [coll]
   "in seconds"
-  (tc/in-seconds
+  (tc/in-minutes
     (tc/interval (:time (first coll))
                  (:time (last coll)))))
 
@@ -81,5 +81,5 @@
           distance      (rround (calculate-distance points))
           average-speed (rround (/ distance (/ elapsed-time 3600)))]
       (println "Distance:     " distance "km")
-      (println "Elapsed time: " elapsed-time "s")
+      (println "Elapsed time: " elapsed-time "min")
       (println "Average speed:" average-speed "km/h"))))
