@@ -2,19 +2,31 @@
   (:require [analyze-runs.gpx :refer :all]
             [clojure.java.io :as io]
             [clojure.string :as s]
-            [compojure.core :refer :all]
-            [compojure.route :as route]
+            [clj-time.core :as t]
+            [clj-time.format :as tf]
             [clojure.core.async :as async :refer [>! <! >!! <!! go chan buffer close! thread
                                                   alts! alts!! timeout]])
   (:gen-class))
 
+(def week-formatter (tf/formatters :weekyear-week))
+(def date-formatter (tf/formatter "yyyy-MM-dd"))
+(def time-formatter (tf/formatter "HH:mm:ss"))
+
 (def gpx-files-channel (chan))
 (def output-channel (chan 20))
 
-(defn distance [file]
-  (-> file .getAbsolutePath get-points-from-file calculate-distance))
+(defn handle-file [file]
+  (let [points (-> file .getAbsolutePath get-points-from-file)
+        distance (format "%.2f" (calculate-distance points))
+        duration (calculate-time points)
+        start (:time (first points))
+        year-week (tf/unparse week-formatter start)
+        date (tf/unparse date-formatter start)
+        time (tf/unparse time-formatter start)
+        ]
+    {:year-week year-week :date date :time time :distance distance :duration duration}))
 
-(async/pipeline (.. Runtime getRuntime availableProcessors) output-channel (map distance) gpx-files-channel)
+(async/pipeline (.. Runtime getRuntime availableProcessors) output-channel (map handle-file) gpx-files-channel)
 
 (defn find-files [path]
   (let [all-direntries (file-seq (io/file path))
@@ -43,7 +55,7 @@
 
 (defn -main
   [& args]
-  (str (find-files)))
+  (test-pipeline))
 
                                         ; map => 53 s
                                         ; pmap => 20s
