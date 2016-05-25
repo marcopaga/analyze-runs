@@ -60,9 +60,7 @@
   (get-points string parse-gpx-string))
 
 (defn get-points-from-file [path]
-  (let [raw (get-data (parse-gpx-file path))
-        trks (:content (find-tag raw :trkseg))]
-    (sort-by :time (map transform-trkpt trks))))
+  (get-points path parse-gpx-file))
 
 (defn calculate-time [coll]
   "in seconds"
