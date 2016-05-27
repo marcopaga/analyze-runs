@@ -17,7 +17,7 @@
 
 (defn handle-file [file]
   (let [points (-> file .getAbsolutePath get-points-from-file)
-        distance (format "%.2f" (calculate-distance points))
+        distance (.format (java.text.DecimalFormat. "#.##") (calculate-distance points))
         duration (calculate-time points)
         start (:time (first points))
         year-week (tf/unparse week-formatter start)
@@ -56,7 +56,3 @@
 (defn -main
   [& args]
   (test-pipeline))
-
-                                        ; map => 53 s
-                                        ; pmap => 20s
-                                        ; core.async 23s
