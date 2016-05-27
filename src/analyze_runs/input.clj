@@ -24,7 +24,7 @@
         date (tf/unparse date-formatter start)
         time (tf/unparse time-formatter start)
         ]
-    {:year-week year-week :date date :time time :distance distance :duration duration}))
+    {:year-week year-week :date date :time time :distance distance :duration duration :joda-date start}))
 
 (async/pipeline (.. Runtime getRuntime availableProcessors) runs-channel (map handle-file) gpx-files-channel)
 
