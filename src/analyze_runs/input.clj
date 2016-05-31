@@ -4,16 +4,13 @@
             [clojure.string :as s]
             [clj-time.core :as t]
             [clj-time.format :as tf]
-            [clojure.core.async :as async :refer [>! <! >!! <!! go chan buffer close! thread
-                                                  alts! alts!! timeout]])
+            [clojure.core.async :as async :refer [>! <! <! go chan pipeline pipe to-chan close!]]
+            [com.stuartsierra.component :as component])
   (:gen-class))
 
 (def week-formatter (tf/formatters :weekyear-week))
 (def date-formatter (tf/formatter "yyyy-MM-dd"))
 (def time-formatter (tf/formatter "HH:mm:ss"))
-
-(def gpx-files-channel (chan))
-(def runs-channel (chan 20))
 
 (defn handle-file [file]
   (let [points (-> file .getAbsolutePath get-points-from-file)
@@ -24,9 +21,8 @@
         date (tf/unparse date-formatter start)
         time (tf/unparse time-formatter start)
         ]
-    {:year-week year-week :date date :time time :distance distance :duration duration :joda-date start}))
-
-(async/pipeline (.. Runtime getRuntime availableProcessors) runs-channel (map handle-file) gpx-files-channel)
+    {:year-week year-week
+     :date date :time time :distance distance :duration duration :joda-date start}))
 
 (defn find-files [path]
   (let [all-direntries (file-seq (io/file path))
@@ -43,12 +39,19 @@
 (defn find-all-files []
   (concat (find-files-dropbox) (find-files-annex)))
 
-(defn fill-input-channel []
-  (async/pipe (async/to-chan (find-all-files)) gpx-files-channel false))
+(defn fill-input-channel [gpx-files-channel]
+  (pipe (to-chan (find-all-files)) gpx-files-channel false))
 
-(defn test-pipeline []
-  (let [number-of-files (count (find-all-files))]
-    (fill-input-channel)
-    (doseq [n (range number-of-files)]
-      (prn (<!! runs-channel)))
-    (prn "done")))
+(defrecord Input [runs-channel]
+  component/Lifecycle
+  (start [this]
+    (let [gpx-files-channel (chan)]
+      (pipeline (.. Runtime getRuntime availableProcessors) runs-channel (map handle-file) gpx-files-channel)
+      (fill-input-channel gpx-files-channel)
+      (assoc this :gpx-files-channel gpx-files-channel)))
+  (stop [this]
+    (close! (:gpx-files-channel this))
+    (assoc this :gpx-files-channel nil)))
+
+(defn new-input-component [runs-channel]
+  (map->Input {:runs-channel runs-channel}))
