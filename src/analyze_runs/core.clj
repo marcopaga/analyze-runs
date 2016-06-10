@@ -14,7 +14,6 @@
 (defn start []
   (component/start (runs-system {}))
   (while (:running @state)
-    (println "tick")
     (Thread/sleep 2000)))
 
 (defn stop []
