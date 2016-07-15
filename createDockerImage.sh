@@ -1,3 +1,3 @@
 #!/bin/sh
 lein ring uberjar
-docker build -t analyze-runs:1 .
+docker build -t marcopaga/analyze-runs:2 .

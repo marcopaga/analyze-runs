@@ -4,6 +4,11 @@
             [compojure.route :as route])
   (:gen-class))
 
+(defn distance [body]
+  (-> (slurp body) get-points-from-string calculate-distance str))
+
+(defn stupid-json [distance]
+  (str "{\"distance\": " distance "}"))
 (defroutes app
   (GET "/" [] "Hello from compojure!")
-  (POST "/" {body :body} (-> (slurp body) get-points-from-string calculate-distance str)))
+  (POST "/" {body :body} (stupid-json (distance body))))
