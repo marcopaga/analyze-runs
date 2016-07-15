@@ -13,6 +13,7 @@
 
 (defn start []
   (component/start (runs-system {}))
+  ;; keep the application running
   (while (:running @state)
     (Thread/sleep 2000)))
 

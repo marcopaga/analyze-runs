@@ -8,8 +8,7 @@
 
 (defn runs-system [config-options]
   (component/system-map
-   :runs-channel
-   (chan 20)
+   :runs-channel (chan 20)
    :input (component/using
            (new-input-component config-options) [:runs-channel])
    :data (component/using
